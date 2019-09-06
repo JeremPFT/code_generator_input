@@ -1,8 +1,10 @@
 with "../common/shared.gpr";
 
-project Model_Tests is
+project Input_Tests is
 
   for Create_Missing_Dirs use "True";
+
+  AUnit_Path := "../aunit/include/aunit";
 
   Src_Dirs := ();
   Src_Dirs := Src_Dirs & "./src_tests";
@@ -11,13 +13,13 @@ project Model_Tests is
 
   Src_Dirs := Src_Dirs & "../utils_assertions/src";
 
-  Src_Dirs := Src_Dirs & "../aunit/include/aunit/framework";
-  Src_Dirs := Src_Dirs & "../aunit/include/aunit/containers";
-  Src_Dirs := Src_Dirs & "../aunit/include/aunit/reporters";
-  Src_Dirs := Src_Dirs & "../aunit/include/aunit/framework";
-  Src_Dirs := Src_Dirs & "../aunit/include/aunit/framework/zfpexception";
-  Src_Dirs := Src_Dirs & "../aunit/include/aunit/framework/calendar";
-  Src_Dirs := Src_Dirs & "../aunit/include/aunit/framework/nativememory";
+  -- Src_Dirs := Src_Dirs & AUnit_Path & "/framework";
+  -- Src_Dirs := Src_Dirs & AUnit_Path & "/containers";
+  -- Src_Dirs := Src_Dirs & AUnit_Path & "/reporters";
+  -- Src_Dirs := Src_Dirs & AUnit_Path & "/framework";
+  -- Src_Dirs := Src_Dirs & AUnit_Path & "/framework/zfpexception";
+  -- Src_Dirs := Src_Dirs & AUnit_Path & "/framework/calendar";
+  -- Src_Dirs := Src_Dirs & AUnit_Path & "/framework/nativememory";
 
   for Source_Dirs use Src_Dirs;
 
@@ -28,10 +30,10 @@ project Model_Tests is
   for Library_Dir use Shared.Library_Dir;
   for Exec_Dir use Shared.Exec_Dir;
 
-  for Main use ("model-tests-run.adb");
+  for Main use ("input-tests-run.adb");
 
   package Compiler renames Shared.Compiler;
 
   package Builder renames Shared.Builder;
 
-end Model_Tests;
+end Input_Tests;

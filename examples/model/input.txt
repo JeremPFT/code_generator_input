@@ -1,4 +1,4 @@
-package: model;
+package {readOnly}: model;
 end_package;
 
 package: model.element;

@@ -1,10 +1,13 @@
 with "../common/shared.gpr";
 
-library project Model_Lib is
+library project Input_Lib is
 
   for Create_Missing_Dirs use "True";
 
+  Opentoken := "../org.opentoken-6.0b";
+
   Src_Lst := ();
+  Src_Lst := Src_Lst & Opentoken;
   Src_Lst := Src_Lst & "./src_lib";
   for Source_Dirs use Src_Lst;
 
@@ -14,11 +17,11 @@ library project Model_Lib is
   for Object_Dir use Shared.Object_Dir;
   for Library_Dir use Shared.Library_Dir;
 
-  for Library_Name use "code_generator_model";
+  for Library_Name use "code_generator_input";
   for Library_Kind use "static";
 
   package Compiler renames Shared.Compiler;
 
   package Builder renames Shared.Builder;
 
-end Model_Lib;
+end Input_Lib;
