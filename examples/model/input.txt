@@ -1,0 +1,50 @@
+package: model;
+end_package;
+
+package: model.element;
+
+  use model.types.element;
+  use model.types.comment;
+  use model.types.namespace;
+
+  class: object_t {abstract};
+
+    field:
+      -owned_comments: comment_vector_t {readOnly, unique};
+      queries: +number_of, +get_by_index, +owns
+      commands: +add
+    end_field;
+
+    field:
+      -owned_elements: element_vector_t {readOnly, unique};
+      queries: +number_of, +get_by_index, +owns
+      commands: +add
+    end_field;
+
+    field:
+      -owner: access object_t'class;
+    end_field;
+
+    +query has_owner return boolean;
+    +query get_owner return not null access constant object_t'class;
+    +query is_owned_by(object: not null access constant object_t'class);
+    +query must_be_owned: return boolean = true;
+
+  end_class;
+
+  procedure initialize (self: in out object_t'class);
+  postcondition (self.number_of_comments = 0 and then self.number_of_owned_elements = 0);
+
+end_package;
+
+package: model.named_element;
+
+  use model.element;
+  limited use model.namespace;
+
+  class: object_t {abstract}: model.element.object_t;
+    field:
+      -name: access string;
+  end class;
+
+end_package;

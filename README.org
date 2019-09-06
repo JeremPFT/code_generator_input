@@ -4,67 +4,12 @@
 #+DATE:		2019-09-06
 #+STARTUP:	content
 
-* input syntax (WIP)
+* Brief
 
-Trying to generate Code Generator Model module.
+The file notes.txt contains some TODOs.
 
-: package:
-:   model;
-: end_package;
-
-Find a way to indicate to not regenerate this file. I may add constants,
-errors, renames...
-
-#+BEGIN_SRC
-package:
-  model.element;
-
-  use model.types.element;
-  use model.types.comment;
-  use model.types.namespace;
-
-  type: object_t {abstract};
-
-    field:
-      -owned_comments: comment_vector_t {readOnly, unique};
-      queries: +number_of, +get_by_index, +owns
-      commands: +add
-    end_field;
-
-    field:
-      -owned_elements: element_vector_t {readOnly, unique};
-      queries: +number_of, +get_by_index, +owns
-      commands: +add
-    end_field;
-
-    field:
-      -owner: access object_t'class;
-    end_field;
-
-    +query has_owner return boolean;
-    +query get_owner return not null access constant object_t'class;
-    +query is_owned_by(object: not null access constant object_t'class);
-    +query must_be_owned: return boolean = true;
-
-  end_type;
-
-  procedure initialize (self: in out object_t'class);
-  postcondition (self.number_of_comments = 0 and then self.number_of_owned_elements = 0);
-
-end_package;
-#+END_SRC
-
-Find a way to indicate definitions for the last queries (about owner)
-
-#+BEGIN_SRC
-package:
-  model.named_element;
-
-  use model.element;
-  limited use model.namespace;
-
-  type: object_t {abstract}: model.element.object_t;
-
-  end_type;
-end_package;
-#+END_SRC
+The directory examples/model contains
+- input.txt : an example of specification (WIP)
+- model.ads : the expected output matching the package Model
+- model-element-object_t-has_owner.adb : may be a solution to give a subprogram
+  body (see notes)

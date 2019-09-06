@@ -1,0 +1,20 @@
+* prevent regenerating a file
+In root package =Model=, I may add constants, errors, renames...
+* give subprogram body
+Queries and commands for vector are straightforward.
+
+For some subprograms, I want to give the definition, either in the specification
+file, or in an attached file (maybe using the qualified namespace).
+
+for
+- Model::Element::Object_T::Has_Owner
+create the file
+- model-element-object_t-has_owner.adb
+with
+: function Has_Owner
+:   (Self: in Object_T)
+:   return Boolean
+:   is (Self.Owner /= null);
+
+When this file exists, the use it to generate the definition in the body,
+otherwised generate a separate file.
