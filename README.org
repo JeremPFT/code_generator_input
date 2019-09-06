@@ -9,7 +9,7 @@
 The file notes.txt contains some TODOs.
 
 The directory examples/model contains
-- input.txt : an example of specification (WIP)
-- model.ads : the expected output matching the package Model
-- model-element-object_t-has_owner.adb : may be a solution to give a subprogram
+- [[file:examples/model/input.txt][input.txt]] : an example of specification (WIP)
+- [[file:examples/model/model.ads][model.ads]] : the expected output matching the package Model
+- [[file:examples/model/model-element-object_t-has_owner.adb][model-element-object_t-has_owner.adb]] : may be a solution to give a subprogram
   body (see notes)
