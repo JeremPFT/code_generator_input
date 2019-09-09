@@ -15,13 +15,13 @@ project Input_Tests is
 
   Src_Dirs := Src_Dirs & ("../" & "org.opentoken-6.0b");
 
-  -- Src_Dirs := Src_Dirs & AUnit_Path & "/framework";
-  -- Src_Dirs := Src_Dirs & AUnit_Path & "/containers";
-  -- Src_Dirs := Src_Dirs & AUnit_Path & "/reporters";
-  -- Src_Dirs := Src_Dirs & AUnit_Path & "/framework";
-  -- Src_Dirs := Src_Dirs & AUnit_Path & "/framework/zfpexception";
-  -- Src_Dirs := Src_Dirs & AUnit_Path & "/framework/calendar";
-  -- Src_Dirs := Src_Dirs & AUnit_Path & "/framework/nativememory";
+  -- Src_Dirs := Src_Dirs & (AUnit_Path & "/framework");
+  -- Src_Dirs := Src_Dirs & (AUnit_Path & "/containers");
+  -- Src_Dirs := Src_Dirs & (AUnit_Path & "/reporters");
+  -- Src_Dirs := Src_Dirs & (AUnit_Path & "/framework");
+  -- Src_Dirs := Src_Dirs & (AUnit_Path & "/framework/zfpexception");
+  -- Src_Dirs := Src_Dirs & (AUnit_Path & "/framework/calendar");
+  -- Src_Dirs := Src_Dirs & (AUnit_Path & "/framework/nativememory");
 
   for Source_Dirs use Src_Dirs;
 
