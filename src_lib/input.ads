@@ -14,7 +14,7 @@ package Input is
    package Latin_1 renames Ada.Characters.Latin_1;
 
    EOL_Dos  : constant String := Latin_1.CR & Latin_1.LF;
-   EOL_Unix : constant String := Latin_1.LF'Image;
-   EOL      : String renames EOL_Dos;
+   EOL_Unix : constant String := Latin_1.CR'Image;
+   EOL      : String renames EOL_Unix;
 
 end Input;

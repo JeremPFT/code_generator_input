@@ -22,7 +22,7 @@ clean::
 	$(CLEAN) input_tests.gpr
 
 run_tests: compil_lib compil_tests
-	${HOME}/tmp/bin/$(EXEC)
+	${HOME}/tmp/bin/$(EXEC) ${HOME}/../projets_perso/ada/code_generator_input/examples/model/input.txt
 
 gnattest: compil_lib
 	gnattest$(EXT) -Pinput_lib.gpr src_lib/input-element-dummy.ads

@@ -1,3 +1,9 @@
+package truc end_package
+
+package
+ truc
+end_package
+
 package {readOnly}: model;
 end_package;
 
