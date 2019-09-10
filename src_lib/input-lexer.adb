@@ -8,11 +8,11 @@ with OpenToken.Recognizer.End_Of_File;
 with OpenToken.Recognizer.Identifier;
 --  with Opentoken.Recognizer.Integer;
 with OpenToken.Recognizer.Keyword;
---  with Opentoken.Recognizer.Line_Comment;
+with OpenToken.Recognizer.Line_Comment;
 with OpenToken.Recognizer.Nothing;
 --  with Opentoken.Recognizer.Real;
 with OpenToken.Recognizer.Separator;
---  with OpenToken.Recognizer.String;
+with OpenToken.Recognizer.String;
 with OpenToken.Text_Feeder.Text_IO;
 with OpenToken.Token.Enumerated.Analyzer;
 with OpenToken.Token.Enumerated;
@@ -21,10 +21,10 @@ package body Input.Lexer is
 
    pragma Warnings (Off, "anonymous access type allocator");
    package Master_Tokens is new OpenToken.Token.Enumerated
-     (Tokens,
-      Tokens'First,
-      Tokens'Last,
-      Tokens'Image);
+   (Tokens,
+    Tokens'First,
+    Tokens'Last,
+    Tokens'Image);
    pragma Warnings (On, "anonymous access type allocator");
 
    package Tokenizer is new Master_Tokens.Analyzer;
@@ -54,53 +54,73 @@ package body Input.Lexer is
 
    procedure Initialize_Syntax
    is
-      package Recog renames OpenToken.Recognizer;
+      package Reco renames OpenToken.Recognizer;
 
-      Letter_Set : Ada.Strings.Maps.Character_Set renames
-        Ada.Strings.Maps.Constants.Letter_Set;
+      Letter_Set : Ada.Strings.Maps.Character_Set
+      renames Ada.Strings.Maps.Constants.Letter_Set;
 
-      Alphanumeric_Set : Ada.Strings.Maps.Character_Set renames
-        Ada.Strings.Maps.Constants.Alphanumeric_Set;
+      Alphanumeric_Set : Ada.Strings.Maps.Character_Set
+      renames Ada.Strings.Maps.Constants.Alphanumeric_Set;
 
-      Standard_Whitespace : Ada.Strings.Maps.Character_Set renames
-        OpenToken.Recognizer.Character_Set.Standard_Whitespace;
+      Standard_Whitespace : Ada.Strings.Maps.Character_Set
+      renames Reco.Character_Set.Standard_Whitespace;
 
    begin
       for Token_Index in Tokens loop
          case Token_Index is
 
-           when First_Keyword_Token .. Last_Keyword_Token =>
-              Syntax (Token_Index) :=
-                Tokenizer.Get (Recog.Keyword.Get (Keywords (Token_Index).all));
+         when First_Keyword_Token .. Last_Keyword_Token =>
 
-           when First_Separator_Token .. Last_Separator_Token =>
-              Syntax (Token_Index) :=
-                Tokenizer.Get (Recog.Separator.Get (Separators (Token_Index).all));
+            Syntax (Token_Index) := Tokenizer.Get
+            (Reco.Keyword.Get
+             (Keyword_Literal => Keywords (Token_Index).all,
+              Case_Sensitive  => True,
+              Reportable      => True));
 
-           when Whitespace_Id    =>
-              Syntax (Token_Index) :=
-                Tokenizer.Get
-                  (Recog.Character_Set.Get
-                     (Set        => Standard_Whitespace,
-                      Reportable => False));
+         when First_Separator_Token .. Last_Separator_Token =>
 
-           when Identifier_Id =>
-              Syntax (Token_Index) :=
-                Tokenizer.Get (Recog.Identifier.Get
-                                 (Start_Chars => Letter_Set,
-                                  Body_Chars  => Alphanumeric_Set));
+            Syntax (Token_Index) := Tokenizer.Get
+            (Reco.Separator.Get
+             (Separator_Literal => Separators (Token_Index).all,
+              Reportable         => True));
 
-              --  when Attribute_Id =>
-              --     Syntax (Token_Index) := Tokenizer.Get (Recog.String.Get);
+         when Comment_ID =>
 
-              --  when Word_Id =>
-              --     Syntax (Token_Index) := Tokenizer.Get (Recog.String.Get);
+            Syntax (Token_Index) := Tokenizer.Get
+            (Reco.Line_Comment.Get
+             (Comment_Introducer => "--",
+              Reportable         => False));
 
-           when End_Of_File_Id =>
-              Syntax (Token_Index) := Tokenizer.Get (Recog.End_Of_File.Get);
+         when Whitespace_ID =>
 
-           when Bad_Token_Id =>
-              Syntax (Token_Index) := Tokenizer.Get (Recog.Nothing.Get);
+            Syntax (Token_Index) := Tokenizer.Get
+            (Reco.Character_Set.Get
+             (Set        => Standard_Whitespace,
+              Reportable => False));
+
+         when Identifier_ID =>
+
+            Syntax (Token_Index) := Tokenizer.Get
+            (Reco.Identifier.Get
+             (Start_Chars   => Letter_Set,
+              Body_Chars    => Alphanumeric_Set,
+              Has_Separator => True));
+
+         when String_ID =>
+
+            Syntax (Token_Index) := Tokenizer.Get
+            (Reco.String.Get);
+
+         when End_Of_File_ID =>
+
+            Syntax (Token_Index) := Tokenizer.Get
+            (Reco.End_Of_File.Get (Reportable => True));
+
+         when Bad_Token_ID =>
+
+            Syntax (Token_Index) := Tokenizer.Get
+            (Reco.Nothing.Get (Reportable => True));
+
          end case;
       end loop;
    end Initialize_Syntax;
@@ -120,14 +140,14 @@ package body Input.Lexer is
    ------------------------
 
    procedure Set_Input_Feeder
-     (File : in Ada.Text_IO.File_Type)
+   (File : in Ada.Text_IO.File_Type)
    is
    begin
       Dbg.Put_Line ("Set_Input_Feeder");
 
       T_IO.Set_Input (File);
       Analyzer.Set_Text_Feeder
-        (OpenToken.Text_Feeder.Text_IO.Create (T_IO.Current_Input));
+      (OpenToken.Text_Feeder.Text_IO.Create (T_IO.Current_Input));
    end Set_Input_Feeder;
 
    ---------------------------------
@@ -147,7 +167,7 @@ package body Input.Lexer is
    procedure Bad_Token_On_Syntax_Error
    is
    begin
-      Analyzer.Set_Default (Bad_Token_Id);
+      Analyzer.Set_Default (Bad_Token_ID);
    end Bad_Token_On_Syntax_Error;
 
    -------------------------------
@@ -155,7 +175,7 @@ package body Input.Lexer is
    -------------------------------
 
    procedure Set_Comments_Reportable
-     (To : in Boolean)
+   (To : in Boolean)
    is
       pragma Unreferenced (To);
    begin
@@ -205,11 +225,11 @@ package body Input.Lexer is
    --  Token_Id  --
    ----------------
 
-   function Token_Id return Tokens
+   function Token_ID return Tokens
    is
    begin
-      return Analyzer.Id;
-   end Token_Id;
+      return Analyzer.ID;
+   end Token_ID;
 
    --------------
    --  Lexeme  --

@@ -7,78 +7,85 @@ package Input.Lexer is
 
    type Tokens is (
                    -- begin keywords
-                   Package_Id,
-                   Package_End_Id,
-                   Class_Id,
-                   Class_End_Id,
-                   Field_Id,
-                   Field_End_Id,
-                   Use_Id,
+                   Project_Start_ID,
+                   Project_Stop_ID,
+                   Package_Start_ID,
+                   Package_Stop_ID,
+                   Class_Start_ID,
+                   Class_Stop_ID,
+                   Field_Start_ID,
+                   Field_Stop_ID,
+                   Use_ID,
                    -- end keywords
                    -- begin separators
-                   Parenthese_Left_Id,
-                   Parenthese_Right_Id,
-                   Brace_Left_Id,
-                   Brace_Right_Id,
-                   Bracket_Left_Id,
-                   Bracket_Right_Id,
-                   Semi_Colon_Id,
-                   Colon_Id,
-                   Equal_Id,
-                   Plus_Id,
-                   Minus_Id,
-                   Comma_Id,
-                   Quote_Id,
+                   Parenthese_Left_ID,
+                   Parenthese_Right_ID,
+                   Brace_Left_ID,
+                   Brace_Right_ID,
+                   Bracket_Left_ID,
+                   Bracket_Right_ID,
+                   Semi_Colon_ID,
+                   Colon_ID,
+                   Equal_ID,
+                   Plus_ID,
+                   Minus_ID,
+                   Comma_ID,
+                   Quote_ID,
+                   Period_ID,
                    --  end separators,
-                   Period_Id,
-                   -- end separator
-                   Whitespace_Id,
-                   Identifier_Id,
+                   Comment_ID,
+                   Whitespace_ID,
+                   Identifier_ID,
+                   String_ID,
 
                    --  Attribute_Id, -- readOnly, unique
                    --  Word_Id, -- everything else
                    --
-                   End_Of_File_Id,
+                   End_Of_File_ID,
                    --  Syntax error
-                   Bad_Token_Id
+                   Bad_Token_ID
                   );
 
-   First_Keyword_Token : constant Tokens := Package_Id;
-   Last_Keyword_Token  : constant Tokens := Use_Id;
-   First_Separator_Token : constant Tokens := Parenthese_Left_Id;
-   Last_Separator_Token  : constant Tokens := Period_Id;
+   First_Keyword_Token : constant Tokens := Project_Start_ID;
+   Last_Keyword_Token  : constant Tokens := Use_ID;
+   First_Separator_Token : constant Tokens := Parenthese_Left_ID;
+   Last_Separator_Token  : constant Tokens := Period_ID;
 
 
    type Token_Array_T is array (Tokens range <>) of String_Access_T;
 
-   Keywords : constant Token_Array_T :=
-     (
-      Package_Id     => +"package",
-      Package_End_Id => +"end_package",
-      Class_Id       => +"class",
-      Class_End_Id   => +"end_class",
-      Field_Id       => +"field",
-      Field_End_Id   => +"end_field",
-      Use_Id         => +"use"
-     );
+   Keywords :
+   constant Token_Array_T (First_Keyword_Token .. Last_Keyword_Token)
+   := (
+       Project_Start_ID => +"project",
+       Project_Stop_ID  => +"end_project",
+       Package_Start_ID => +"package",
+       Package_Stop_ID  => +"end_package",
+       Class_Start_ID   => +"class",
+       Class_Stop_ID    => +"end_class",
+       Field_Start_ID   => +"field",
+       Field_Stop_ID    => +"end_field",
+       Use_ID           => +"use"
+      );
 
-   Separators : constant Token_Array_T :=
-     (
-      Parenthese_Left_Id  => +"(",
-      Parenthese_Right_Id => +")",
-      Brace_Left_Id       => +"{",
-      Brace_Right_Id      => +"}",
-      Bracket_Left_Id     => +"[",
-      Bracket_Right_Id    => +"]",
-      Semi_Colon_Id       => +";",
-      Colon_Id            => +":",
-      Equal_Id            => +"=",
-      Plus_Id             => +"+",
-      Minus_Id            => +"-",
-      Comma_Id            => +",",
-      Quote_Id            => +"'",
-      Period_Id           => +"."
-     );
+   Separators :
+   constant Token_Array_T (First_Separator_Token .. Last_Separator_Token)
+   := (
+       Parenthese_Left_ID  => +"(",
+       Parenthese_Right_ID => +")",
+       Brace_Left_ID       => +"{",
+       Brace_Right_ID      => +"}",
+       Bracket_Left_ID     => +"[",
+       Bracket_Right_ID    => +"]",
+       Semi_Colon_ID       => +";",
+       Colon_ID            => +":",
+       Equal_ID            => +"=",
+       Plus_ID             => +"+",
+       Minus_ID            => +"-",
+       Comma_ID            => +",",
+       Quote_ID            => +"'",
+       Period_ID           => +"."
+      );
 
    procedure Initialize;
 
@@ -100,7 +107,7 @@ package Input.Lexer is
 
    function Line   return Natural;
    function Column return Natural;
-   function Token_Id return Tokens;
+   function Token_ID return Tokens;
    function Lexeme   return String;
    --  Query the current token:
 

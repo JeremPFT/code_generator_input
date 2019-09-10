@@ -1,0 +1,35 @@
+root                 -> project_def
+
+project_def          -> project_start_ID
+                        identifier_ID
+                        output_directory_def
+                        list_packages_def
+                        project_stop_ID
+
+output_directory_def -> output_directory_ID
+                        string_ID
+
+list_packages_def    -> package_def list_packages
+                        |
+                        empty
+
+package_def          -> package_start_ID
+                        name_def
+                        package_content_def
+                        package_stop_ID
+
+name_def           -> identifier_ID name_component_def
+name_component_def -> period_ID name_component_def
+name_component_def -> identifier_ID
+
+item_name_components -> period_t identifier_ID
+                        |
+                        empty
+
+package_content_def  -> use_def
+                        |
+                        class_def
+                        |
+                        behaviour_def
+
+use_def -> name
