@@ -19,16 +19,6 @@ with OpenToken.Token.Enumerated;
 
 package body Input.Lexer is
 
-   pragma Warnings (Off, "anonymous access type allocator");
-   package Master_Tokens is new OpenToken.Token.Enumerated
-   (Tokens,
-    Tokens'First,
-    Tokens'Last,
-    Tokens'Image);
-   pragma Warnings (On, "anonymous access type allocator");
-
-   package Tokenizer is new Master_Tokens.Analyzer;
-
    procedure Initialize_Syntax;
 
    procedure Initialize_Analyzer;

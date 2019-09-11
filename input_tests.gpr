@@ -11,7 +11,7 @@ project Input_Tests is
 
   Src_Dirs := Src_Dirs & "./src_lib";
 
-  Src_Dirs := Src_Dirs & "../utils_assertions/src";
+  Src_Dirs := Src_Dirs & "../utils/src_lib";
 
   Src_Dirs := Src_Dirs & ("../" & "org.opentoken-6.0b");
 

@@ -5,52 +5,51 @@ package Input.Lexer is
    --  code taken from org.opentoken-6.0b/Language_Lexers/ada_lexer.ads
    --  code taken from org.opentoken-6.0b/Language_Lexers/ada_lexer.adb
 
-   type Tokens is (
-                   -- begin keywords
-                   Project_Start_ID,
-                   Project_Stop_ID,
-                   Package_Start_ID,
-                   Package_Stop_ID,
-                   Class_Start_ID,
-                   Class_Stop_ID,
-                   Field_Start_ID,
-                   Field_Stop_ID,
-                   Use_ID,
-                   -- end keywords
-                   -- begin separators
-                   Parenthese_Left_ID,
-                   Parenthese_Right_ID,
-                   Brace_Left_ID,
-                   Brace_Right_ID,
-                   Bracket_Left_ID,
-                   Bracket_Right_ID,
-                   Semi_Colon_ID,
-                   Colon_ID,
-                   Equal_ID,
-                   Plus_ID,
-                   Minus_ID,
-                   Comma_ID,
-                   Quote_ID,
-                   Period_ID,
-                   --  end separators,
-                   Comment_ID,
-                   Whitespace_ID,
-                   Identifier_ID,
-                   String_ID,
+   type Token_IDs is (
+                      -- begin keywords
+                      Project_Start_ID,
+                      Project_Stop_ID,
+                      Package_Start_ID,
+                      Package_Stop_ID,
+                      Class_Start_ID,
+                      Class_Stop_ID,
+                      Field_Start_ID,
+                      Field_Stop_ID,
+                      Use_ID,
+                      -- end keywords
+                      -- begin separators
+                      Parenthese_Left_ID,
+                      Parenthese_Right_ID,
+                      Brace_Left_ID,
+                      Brace_Right_ID,
+                      Bracket_Left_ID,
+                      Bracket_Right_ID,
+                      Semi_Colon_ID,
+                      Colon_ID,
+                      Equal_ID,
+                      Plus_ID,
+                      Minus_ID,
+                      Comma_ID,
+                      Quote_ID,
+                      Period_ID,
+                      --  end separators,
+                      Comment_ID,
+                      Whitespace_ID,
+                      Identifier_ID,
+                      String_ID,
 
-                   --  Attribute_Id, -- readOnly, unique
-                   --  Word_Id, -- everything else
-                   --
-                   End_Of_File_ID,
-                   --  Syntax error
-                   Bad_Token_ID
-                  );
+                      --  Attribute_Id, -- readOnly, unique
+                      --  Word_Id, -- everything else
+                      --
+                      End_Of_File_ID,
+                      --  Syntax error
+                      Bad_Token_ID
+                     );
 
    First_Keyword_Token : constant Tokens := Project_Start_ID;
    Last_Keyword_Token  : constant Tokens := Use_ID;
    First_Separator_Token : constant Tokens := Parenthese_Left_ID;
    Last_Separator_Token  : constant Tokens := Period_ID;
-
 
    type Token_Array_T is array (Tokens range <>) of String_Access_T;
 
@@ -86,6 +85,16 @@ package Input.Lexer is
        Quote_ID            => +"'",
        Period_ID           => +"."
       );
+
+   pragma Warnings (Off, "anonymous access type allocator");
+   package Master_Tokens is new OpenToken.Token.Enumerated
+   (Token_ID       => Token_IDs,
+    First_Terminal => Token_IDs'First,
+    Last_Terminal  => Token_IDs'Last,
+    Token_Image    => Token_IDs'Image);
+   pragma Warnings (On, "anonymous access type allocator");
+
+   package Tokenizer is new Master_Tokens.Analyzer;
 
    procedure Initialize;
 
