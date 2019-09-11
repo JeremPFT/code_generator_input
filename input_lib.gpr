@@ -4,10 +4,10 @@ library project Input_Lib is
 
   for Create_Missing_Dirs use "True";
 
-  Opentoken := "../org.opentoken-6.0b";
+  OpenToken := "../org.opentoken-6.0b";
 
   Src_Lst := ();
-  Src_Lst := Src_Lst & Opentoken;
+  Src_Lst := Src_Lst & OpenToken;
   Src_Lst := Src_Lst & "./src_lib";
   for Source_Dirs use Src_Lst;
 

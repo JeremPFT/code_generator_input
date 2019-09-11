@@ -9,7 +9,16 @@ CLEAN=gprclean$(EXT)
 
 EXEC=input-tests-run$(EXT)
 
-all:  run_tests
+define git-clone
+	-@cd .. && git clone https://github.com/JeremPFT/$(1).git $(1)
+endef
+
+all:  dependancies run_tests
+
+dependancies::
+	$(call git-clone,org.opentoken-6.0b)
+	$(call git-clone,common)
+	$(call git-clone,utils_assertions)
 
 compil_lib::
 	$(BUILD) -j4 -g -gnatef input_lib.gpr
