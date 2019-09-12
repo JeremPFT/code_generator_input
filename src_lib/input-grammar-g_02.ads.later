@@ -1,0 +1,54 @@
+with Opentoken.Token.Enumerated.String;
+
+with Input.Lexer;
+
+package Input.Grammar.G_01 is
+
+   package String_Token is new Lexer.Master_Token.String;
+
+   Feeder : aliased Opentoken.Text_Feeder.String.Instance;
+
+   Analyzer : constant Lexer.Tokenizer.Handle :=
+   Lexer.Tokenizer.Initialize (Lexer.Syntax, Feeder'Access);
+
+   ----------------------------------------------------------------------
+   --
+   --  S   -> PRJ EOF                                                          print (Project)
+   --  PRJ -> PRJ_START_T name Output_Directory Package_List PRJ_STOP_T        Project = name + output_directory + P_L
+   --  OD  -> OUTPUT_T String                                                  set output_directory
+   --  PL  -> Package { Package }                                              packages.value += package.value
+   --  PCK -> PCK_START_T name PCK_STOP_T                                      package.value = package_name
+
+
+   procedure Print_Project
+   (Match : in out Opentoken.Token.Selection.Instance;
+    From  : in     Opentoken.Token.Class);
+
+   procedure Build_Project
+   (Match : in out Opentoken.Token.Selection.Instance;
+    From  : in     Opentoken.Token.Class);
+
+   Project_Start_Token : constant Master_Token.Handle := Syntax (Project_Start_Id).Token_Handle;
+   Project_Stop_Token  : constant Master_Token.Handle := Syntax (Project_Stop_Id).Token_Handle;
+
+   Package_Start_Token : constant Master_Token.Handle := Syntax (Package_Start_Id).Token_Handle;
+   Package_Stop_Token  : constant Master_Token.Handle := Syntax (Package_Stop_Id).Token_Handle;
+
+
+   function Root return Opentoken.Token.Handle;
+
+   function Project_Def return Opentoken.Token.Handle;
+
+   function Output_Directory_Def return Opentoken.Token.Handle;
+
+   --
+   --  Project:          P
+   --  Output_Directory: OD
+   --  package_list:     PL
+   --
+   --  P  -> PROJECT_START OD PL PROJECT_STOP
+   --  OD -> OUTPUT_DIRECTORY STRING
+   --  PL -> PL1 P | PL1
+   --  PL1 ->  | PL
+
+end Input.Grammar.G_01;

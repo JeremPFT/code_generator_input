@@ -14,8 +14,6 @@ with OpenToken.Recognizer.Nothing;
 with OpenToken.Recognizer.Separator;
 with OpenToken.Recognizer.String;
 with OpenToken.Text_Feeder.Text_IO;
-with OpenToken.Token.Enumerated.Analyzer;
-with OpenToken.Token.Enumerated;
 
 package body Input.Lexer is
 
@@ -23,7 +21,8 @@ package body Input.Lexer is
 
    procedure Initialize_Analyzer;
 
-   Syntax : aliased Tokenizer.Syntax;
+   Full_Syntax : aliased Tokenizer.Syntax;
+   function Syntax return Tokenizer.Syntax is (Full_Syntax);
 
    Analyzer : aliased Tokenizer.Handle;
 
@@ -56,12 +55,12 @@ package body Input.Lexer is
       renames Reco.Character_Set.Standard_Whitespace;
 
    begin
-      for Token_Index in Tokens loop
+      for Token_Index in Token_ID_T loop
          case Token_Index is
 
          when First_Keyword_Token .. Last_Keyword_Token =>
 
-            Syntax (Token_Index) := Tokenizer.Get
+            Full_Syntax (Token_Index) := Tokenizer.Get
             (Reco.Keyword.Get
              (Keyword_Literal => Keywords (Token_Index).all,
               Case_Sensitive  => True,
@@ -69,28 +68,28 @@ package body Input.Lexer is
 
          when First_Separator_Token .. Last_Separator_Token =>
 
-            Syntax (Token_Index) := Tokenizer.Get
+            Full_Syntax (Token_Index) := Tokenizer.Get
             (Reco.Separator.Get
              (Separator_Literal => Separators (Token_Index).all,
               Reportable         => True));
 
          when Comment_ID =>
 
-            Syntax (Token_Index) := Tokenizer.Get
+            Full_Syntax (Token_Index) := Tokenizer.Get
             (Reco.Line_Comment.Get
              (Comment_Introducer => "--",
               Reportable         => False));
 
          when Whitespace_ID =>
 
-            Syntax (Token_Index) := Tokenizer.Get
+            Full_Syntax (Token_Index) := Tokenizer.Get
             (Reco.Character_Set.Get
              (Set        => Standard_Whitespace,
               Reportable => False));
 
          when Identifier_ID =>
 
-            Syntax (Token_Index) := Tokenizer.Get
+            Full_Syntax (Token_Index) := Tokenizer.Get
             (Reco.Identifier.Get
              (Start_Chars   => Letter_Set,
               Body_Chars    => Alphanumeric_Set,
@@ -98,17 +97,17 @@ package body Input.Lexer is
 
          when String_ID =>
 
-            Syntax (Token_Index) := Tokenizer.Get
+            Full_Syntax (Token_Index) := Tokenizer.Get
             (Reco.String.Get);
 
-         when End_Of_File_ID =>
+         when EOF_ID =>
 
-            Syntax (Token_Index) := Tokenizer.Get
+            Full_Syntax (Token_Index) := Tokenizer.Get
             (Reco.End_Of_File.Get (Reportable => True));
 
          when Bad_Token_ID =>
 
-            Syntax (Token_Index) := Tokenizer.Get
+            Full_Syntax (Token_Index) := Tokenizer.Get
             (Reco.Nothing.Get (Reportable => True));
 
          end case;
@@ -140,25 +139,20 @@ package body Input.Lexer is
       (OpenToken.Text_Feeder.Text_IO.Create (T_IO.Current_Input));
    end Set_Input_Feeder;
 
-   ---------------------------------
-   --  Exception_On_Syntax_Error  --
-   ---------------------------------
+   ---------------------------
+   --  Set_Action_On_Error  --
+   ---------------------------
 
-   procedure Exception_On_Syntax_Error
+   procedure Set_Action_On_Error
+   (Action: in On_Error_Action_T)
    is
    begin
-      Analyzer.Unset_Default;
-   end Exception_On_Syntax_Error;
+      case Action is
+      when Raise_Exception => Analyzer.Unset_Default;
 
-   ---------------------------------
-   --  Bad_Token_On_Syntax_Error  --
-   ---------------------------------
-
-   procedure Bad_Token_On_Syntax_Error
-   is
-   begin
-      Analyzer.Set_Default (Bad_Token_ID);
-   end Bad_Token_On_Syntax_Error;
+      when Return_Bad_Token => Analyzer.Set_Default (Bad_Token_ID);
+      end case;
+   end Set_Action_On_Error;
 
    -------------------------------
    --  Set_Comments_Reportable  --
@@ -215,7 +209,7 @@ package body Input.Lexer is
    --  Token_Id  --
    ----------------
 
-   function Token_ID return Tokens
+   function Token_ID return Token_ID_T
    is
    begin
       return Analyzer.ID;
