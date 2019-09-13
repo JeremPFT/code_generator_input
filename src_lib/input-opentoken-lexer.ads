@@ -3,7 +3,7 @@ with Ada.Text_IO;
 with OpenToken.Token.Enumerated;
 with OpenToken.Token.Enumerated.Analyzer;
 
-package Input.Lexer is
+package Input.OpenToken.Lexer is
 
    --  code taken from org.opentoken-6.0b/Language_Lexers/ada_lexer.ads
    --  code taken from org.opentoken-6.0b/Language_Lexers/ada_lexer.adb
@@ -92,7 +92,7 @@ package Input.Lexer is
       );
 
    pragma Warnings (Off, "anonymous access type allocator");
-   package Master_Token is new OpenToken.Token.Enumerated
+   package Master_Token is new Standard.OpenToken.Token.Enumerated
    (Token_ID       => Token_ID_T,
     First_Terminal => Token_ID_T'First,
     Last_Terminal  => Token_ID_T'Last,
@@ -128,4 +128,4 @@ package Input.Lexer is
    function Lexeme   return String;
    --  Query the current token:
 
-end Input.Lexer;
+end Input.OpenToken.Lexer;

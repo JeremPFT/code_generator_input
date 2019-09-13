@@ -1,3 +1,5 @@
-project a_project_name
-  output_directory "c:/Desktop"
+project
+  a_project_name
+
+
 end_project

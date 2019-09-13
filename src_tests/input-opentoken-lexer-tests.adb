@@ -3,7 +3,7 @@ with Ada.Exceptions;
 
 with OpenToken;
 
-procedure Input.Lexer.Tests
+procedure Input.OpenToken.Lexer.Tests
 is
    package Cmd renames Ada.Command_Line;
 
@@ -40,8 +40,8 @@ begin
    end loop;
 
 exception
-when E : OpenToken.Syntax_Error =>
+when E : Standard.OpenToken.Syntax_Error =>
    T_IO.Put_Line (T_IO.Line (File)'Img
                   & ": "
                   & Ada.Exceptions.Exception_Message (E));
-end Input.Lexer.Tests;
+end Input.OpenToken.Lexer.Tests;

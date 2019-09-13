@@ -15,7 +15,7 @@ with OpenToken.Recognizer.Separator;
 with OpenToken.Recognizer.String;
 with OpenToken.Text_Feeder.Text_IO;
 
-package body Input.Lexer is
+package body Input.OpenToken.Lexer is
 
    procedure Initialize_Syntax;
 
@@ -43,7 +43,7 @@ package body Input.Lexer is
 
    procedure Initialize_Syntax
    is
-      package Reco renames OpenToken.Recognizer;
+      package Reco renames Standard.OpenToken.Recognizer;
 
       Letter_Set : Ada.Strings.Maps.Character_Set
       renames Ada.Strings.Maps.Constants.Letter_Set;
@@ -71,7 +71,7 @@ package body Input.Lexer is
             Full_Syntax (Token_Index) := Tokenizer.Get
             (Reco.Separator.Get
              (Separator_Literal => Separators (Token_Index).all,
-              Reportable         => True));
+              Reportable        => True));
 
          when Comment_ID =>
 
@@ -136,7 +136,7 @@ package body Input.Lexer is
 
       T_IO.Set_Input (File);
       Analyzer.Set_Text_Feeder
-      (OpenToken.Text_Feeder.Text_IO.Create (T_IO.Current_Input));
+      (Standard.OpenToken.Text_Feeder.Text_IO.Create (T_IO.Current_Input));
    end Set_Input_Feeder;
 
    ---------------------------
@@ -225,4 +225,6 @@ package body Input.Lexer is
       return Analyzer.Lexeme;
    end Lexeme;
 
-end Input.Lexer;
+begin
+   Initialize;
+end Input.OpenToken.Lexer;

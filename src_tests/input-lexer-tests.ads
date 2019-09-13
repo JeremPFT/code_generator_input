@@ -1,1 +1,0 @@
-procedure Input.Lexer.Tests;
