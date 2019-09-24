@@ -5,7 +5,11 @@ with Opentoken.Recognizer.Identifier;
 with Opentoken.Recognizer.Character_Set;
 --  with Opentoken.Recognizer.End_Of_File;
 
-package body Input.Opentok.Grammar_01 is
+with Input.Opentok.Project_Synt;
+
+with Model.Types.Project; use Model.Types.Project;
+
+package body Input.Opentok.Grammar.G_01 is
 
    function Symbols return Symbol_Array_T
    is
@@ -77,4 +81,28 @@ package body Input.Opentok.Grammar_01 is
       return Result;
    end Recognizers;
 
-end Input.Opentok.Grammar_01;
+   procedure Print_Project
+     (New_Token :    out Nonterminal.Class;
+      Source    : in     Token_List.Instance'Class;
+      To_Id     : in     Master_Token.Token_Id)
+   is
+
+      Project_Token : Token_List.List_Iterator
+        := Token_List.Initial_Iterator (Source);
+
+      Project_Instance : Project_Class_T := null;
+
+   begin
+
+      Project_Instance := Project_Synt.Value;
+
+      T_IO.Put_Line ("project name: "
+                       & Project_Instance.Get_Name);
+      T_IO.Put_Line ("project directory: "
+                       & Project_Instance.Get_Output_Directory);
+      T_IO.Put_Line ("number of packages: "
+                       & Project_Instance.Number_Of_Packages'Img);
+
+   end Print_Project;
+
+end Input.Opentok.Grammar.G_01;

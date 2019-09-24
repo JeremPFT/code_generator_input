@@ -1,0 +1,9 @@
+abstract project Input_Lib_Src is
+
+  Opentoken := "../org.opentoken-6.0b";
+
+  Src_Dirs := ();
+  Src_Dirs := Src_Dirs & Opentoken;
+  Src_Dirs := Src_Dirs & "./src_lib";
+
+end Input_Lib_Src;

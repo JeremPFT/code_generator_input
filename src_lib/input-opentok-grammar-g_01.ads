@@ -8,7 +8,7 @@ with Opentoken.Token.Enumerated.Analyzer;
 with Opentoken.Token.Enumerated.List;
 with Opentoken.Token.Enumerated.Nonterminal;
 
-package Input.Opentok.Grammar_01 is
+package Input.Opentok.Grammar.G_01 is
 
    package Lexical_Parser is
 
@@ -67,6 +67,18 @@ package Input.Opentok.Grammar_01 is
 
    function Symbols return Symbol_Array_T;
 
+   function "+"
+     (Token_Id : in Token_Ids_T)
+     return Master_Token.Handle
+     is (Symbols (Token_Id));
+
+   function "-"
+     (Token_Id : in Token_Ids_T)
+     return Nonterminal.Handle
+     is (Nonterminal.Handle (Symbols (Token_Id)));
+
+   pragma Precondition (Token_Id > Last_Terminal);
+
    type Recognizer_Array_T is
      array (Lexical_Parser.Token_Ids_T range First_Terminal .. Last_Terminal)
      of Opentoken.Recognizer.Handle;
@@ -80,10 +92,20 @@ package Input.Opentok.Grammar_01 is
    --
    ----------------------------------------------------------------------
 
+   procedure Print_Project
+     (New_Token :    out Nonterminal.Class;
+      Source    : in     Token_List.Instance'Class;
+      To_Id     : in     Master_Token.Token_Id);
+
+   use type Token_List.Instance;
+   use type Production.Right_Hand_Side;
+   use type Production.Instance;
+   use type Production_List.Instance;
+
    Grammar : constant Production_List.Instance :=
-     Symbols (S_Prime_Id) <= Symbols (Prj_Id) & Symbols (Eof_Id)
+     (-S_Prime_Id) <= (+Prj_Id) & (+Eof_Id) + Print_Project'Access
      and
-     Symbols (Prj_Id)     <= Symbols (Project_Start_Id) & Symbols (Id_Id) & Symbols (Project_Stop_Id)
+     (-Prj_Id)     <= (+Project_Start_Id) & (+Id_Id) & (+Project_Stop_Id)
    ;
 
-end Input.Opentok.Grammar_01;
+end Input.Opentok.Grammar.G_01;

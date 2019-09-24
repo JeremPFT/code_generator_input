@@ -1,18 +1,22 @@
 with "../common/shared.gpr";
+with "input_lib_src.gpr";
 
 library project Input_Lib is
 
   for Create_Missing_Dirs use "True";
 
-  OpenToken := "../org.opentoken-6.0b";
+  Opentoken := "../org.opentoken-6.0b";
 
-  Src_Lst := ();
-  Src_Lst := Src_Lst & OpenToken;
-  Src_Lst := Src_Lst & "./src_lib";
-  for Source_Dirs use Src_Lst;
+  -- Src_dirs := ();
+  -- Src_dirs := Src_dirs & OpenToken;
+  -- Src_dirs := Src_dirs & "./src_lib";
 
-  Exc_Src_Lst := ();
-  for Excluded_Source_Files use Exc_Src_Lst;
+  Src_Dirs := Input_Lib_Src.Src_Dirs;
+
+  for Source_Dirs use Src_Dirs;
+
+  Exc_Src_Dirs := ();
+  for Excluded_Source_Files use Exc_Src_Dirs;
 
   for Object_Dir use Shared.Object_Dir;
   for Library_Dir use Shared.Library_Dir;

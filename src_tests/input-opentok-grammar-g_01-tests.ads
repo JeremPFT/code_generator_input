@@ -1,1 +1,1 @@
-procedure Input.OpenToken.Grammar.G_01.Tests;
+procedure Input.Opentok.Grammar.G_01.Tests;

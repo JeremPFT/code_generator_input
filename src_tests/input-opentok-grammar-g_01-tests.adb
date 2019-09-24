@@ -6,6 +6,8 @@ is
      &
      "code_generator_input/examples/model/input_01.txt";
 
+   Input_File : T_IO.File_Type;
+
    Line : String (1 .. 1024);
    Line_Length : Natural := 0;
 

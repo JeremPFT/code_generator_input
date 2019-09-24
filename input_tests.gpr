@@ -1,32 +1,22 @@
 with "../common/shared.gpr";
+with "input_lib_src.gpr";
 
 project Input_Tests is
 
   for Create_Missing_Dirs use "True";
 
-  AUnit_Path := "../aunit/include/aunit";
-
   Src_Dirs := ();
-  Src_Dirs := Src_Dirs & "./src_tests";
 
-  Src_Dirs := Src_Dirs & "./src_lib";
-
+  Src_Dirs := Src_Dirs & Input_Lib_Src.Src_Dirs;
+  Src_Dirs := Src_Dirs & "../code_generator_model/src_lib";
+  Src_Dirs := Src_Dirs & "../org.opentoken-6.0b";
   Src_Dirs := Src_Dirs & "../utils/src_lib";
-
-  Src_Dirs := Src_Dirs & ("../" & "org.opentoken-6.0b");
-
-  -- Src_Dirs := Src_Dirs & (AUnit_Path & "/framework");
-  -- Src_Dirs := Src_Dirs & (AUnit_Path & "/containers");
-  -- Src_Dirs := Src_Dirs & (AUnit_Path & "/reporters");
-  -- Src_Dirs := Src_Dirs & (AUnit_Path & "/framework");
-  -- Src_Dirs := Src_Dirs & (AUnit_Path & "/framework/zfpexception");
-  -- Src_Dirs := Src_Dirs & (AUnit_Path & "/framework/calendar");
-  -- Src_Dirs := Src_Dirs & (AUnit_Path & "/framework/nativememory");
+  Src_Dirs := Src_Dirs & "./src_tests";
 
   for Source_Dirs use Src_Dirs;
 
-  Excl_Src_Lst := ();
-  for Excluded_Source_Files use Excl_Src_Lst;
+  Excl_Src_Dirs := ();
+  for Excluded_Source_Files use Excl_Src_Dirs;
 
   for Object_Dir use Shared.Object_Dir;
   for Library_Dir use Shared.Library_Dir;
