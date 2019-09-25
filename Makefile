@@ -1,26 +1,11 @@
-ifdef OS
-	EXT=.exe
-else
-	EXT=
-endif
-
-BUILD=gprbuild$(EXT)
-CLEAN=gprclean$(EXT)
-
+LIB_GPR=input_lib.gpr
+TEST_GPR=input_tests.gpr
 EXEC=input-tests-run$(EXT)
+RUN=${HOME}/tmp/bin/$(EXEC)
 
-all:  run_tests
+CMD=make -f ../common/Makefile LIB_GPR=$(LIB_GPR) TEST_GPR=$(TEST_GPR) RUN=$(RUN) EXEC=$(EXEC)
 
-compil_lib::
-	$(BUILD) -j4 -g -gnatef input_lib.gpr
+.PHONY : all compil_lib compil_tests clean run_tests
 
-compil_tests::
-	$(BUILD) -j4 -g -gnatef input_tests.gpr
-
-clean::
-	$(CLEAN) input_lib.gpr
-	$(CLEAN) input_tests.gpr
-
-run_tests: compil_tests
-	${HOME}/tmp/bin/$(EXEC)
-# ${HOME}/tmp/bin/$(EXEC) ${HOME}/../projets_perso/ada/code_generator_input/examples/model/input.txt
+all compil_lib compil_tests clean run_tests::
+	$(CMD) $@
