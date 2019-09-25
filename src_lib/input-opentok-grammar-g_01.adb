@@ -5,8 +5,6 @@ with Opentoken.Recognizer.Identifier;
 with Opentoken.Recognizer.Character_Set;
 --  with Opentoken.Recognizer.End_Of_File;
 
-with Input.Opentok.Project_Synt;
-
 with Model.Types.Project; use Model.Types.Project;
 
 package body Input.Opentok.Grammar.G_01 is
@@ -84,7 +82,7 @@ package body Input.Opentok.Grammar.G_01 is
    procedure Print_Project
      (New_Token :    out Nonterminal.Class;
       Source    : in     Token_List.Instance'Class;
-      To_Id     : in     Master_Token.Token_Id)
+      To_Id     : in     Token_Ids_T)
    is
 
       Project_Token : Token_List.List_Iterator
@@ -94,7 +92,7 @@ package body Input.Opentok.Grammar.G_01 is
 
    begin
 
-      Project_Instance := Project_Synt.Value;
+      Project_Instance := Project_Op.Value (Subject => Source);
 
       T_IO.Put_Line ("project name: "
                        & Project_Instance.Get_Name);

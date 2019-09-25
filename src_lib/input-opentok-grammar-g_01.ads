@@ -5,8 +5,11 @@ with Opentoken.Production.Parser;
 with Opentoken.Production.Parser.Lalr;
 with Opentoken.Token.Enumerated;
 with Opentoken.Token.Enumerated.Analyzer;
+with Opentoken.Token.Enumerated.Identifier;
 with Opentoken.Token.Enumerated.List;
 with Opentoken.Token.Enumerated.Nonterminal;
+
+with Input.Opentok.Project_Synt;
 
 package Input.Opentok.Grammar.G_01 is
 
@@ -92,10 +95,20 @@ package Input.Opentok.Grammar.G_01 is
    --
    ----------------------------------------------------------------------
 
+   package Token_Identifier is new Master_Token.Identifier;
+
+   package Project_Op is new Input.Opentok.Project_Synt
+     (Token       => Master_Token,
+      Token_List  => Token_List,
+      Nonterminal => Nonterminal,
+      Terminal_Id => Token_Identifier);
+
+   use Project_Op;
+
    procedure Print_Project
      (New_Token :    out Nonterminal.Class;
       Source    : in     Token_List.Instance'Class;
-      To_Id     : in     Master_Token.Token_Id);
+      To_Id     : in     Token_Ids_T);
 
    use type Token_List.Instance;
    use type Production.Right_Hand_Side;
@@ -105,7 +118,7 @@ package Input.Opentok.Grammar.G_01 is
    Grammar : constant Production_List.Instance :=
      (-S_Prime_Id) <= (+Prj_Id) & (+Eof_Id) + Print_Project'Access
      and
-     (-Prj_Id)     <= (+Project_Start_Id) & (+Id_Id) & (+Project_Stop_Id)
+     (-Prj_Id)     <= (+Project_Start_Id) & (+Id_Id) & (+Project_Stop_Id) + Build_Project
    ;
 
 end Input.Opentok.Grammar.G_01;

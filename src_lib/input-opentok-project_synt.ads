@@ -1,3 +1,4 @@
+with Opentoken.Token.Enumerated.Identifier;
 with Opentoken.Token.Enumerated.List;
 with Opentoken.Token.Enumerated.Nonterminal;
 with Opentoken.Token.Enumerated;
@@ -6,8 +7,8 @@ with Model.Types.Project; use Model.Types.Project;
 
 generic
    with package Token       is new Opentoken.Token.Enumerated (<>);
-   with package Token_List  is new Opentoken.Token.List;
-   with package Nonterminal is new Token.Enumerated.Nonterminal (Token_List);
+   with package Token_List  is new Token.List;
+   with package Nonterminal is new Token.Nonterminal (Token_List);
    with package Terminal_Id is new Token.Identifier;
 package Input.Opentok.Project_Synt is
 
